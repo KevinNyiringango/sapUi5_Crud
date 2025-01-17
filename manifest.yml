@@ -1,0 +1,11 @@
+---
+applications:
+  - name: sapUi5_Crud
+    memory: 512M
+    buildpacks:
+      - https://github.com/cloudfoundry/staticfile-buildpack
+    path: ./dist  # Path to your built files
+    routes:
+      - route: sapUi5_Crud.cfapps.us10-001.hana.ondemand.com  # Updated with a valid domain
+    env:
+      UI5_REPO: "https://github.com/Kevin-gram/sapUi5_Crud"

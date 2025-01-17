@@ -1,0 +1,420 @@
+<mvc:View
+    controllerName="crud.controller.Main"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:custom="crud.controls"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+>
+    <f:FlexibleColumnLayout id="layout" layout="OneColumn">
+        <!-- Master Column -->
+        <f:beginColumnPages>
+            <Page title="Product List">
+                <headerContent>
+                    <Toolbar>
+                        
+                        <ToolbarSpacer />
+                       
+                        <Button
+                        text="Add Product"
+                        id="addButton"
+                            icon="sap-icon://add"
+                            press="onShowProductDialog"
+                        />
+                        <Button
+                            text="Create Product with Details"
+                            press="onShowProductWithDetailsDialog"
+                        />
+                         <Button
+                            text="View Chart"
+                            press="onViewChart"
+                        />
+                        <Button
+                            text="Detail Column"
+                            press="onOpenDetailColumn"
+                        />
+                        <Button
+                            text="Persons"
+                            press="onSeePersons"
+                        />
+                        <Button
+                            text="Request Products"
+                            press="onOpenRequestproducts"
+                        />
+                        <Button
+                            text="Suppliers"
+                            press="onSeeSuppliers"
+                        />
+                        <Button
+                            icon="sap-icon://log"
+                            press="onLogout"
+                        />
+                        <VBox class="sapUiSmallMargin">
+              <VBox class="sapUiSmallMargin">
+                <Button
+                    press="onThemeToggle"
+                    icon="sap-icon://palette"
+                />
+                </VBox>
+            </VBox>
+                    </Toolbar>
+                </headerContent>
+                <content>
+                    <IconTabBar id="iconTabBar" select="onFilterSelect">
+                        <items>
+                            <IconTabFilter
+                                key="all"
+                                text="All"
+                                icon="sap-icon://filter">
+                            </IconTabFilter>
+                            <IconTabFilter
+                                key="highRating"
+                                text="High Rating"
+                                icon="sap-icon://favorite">
+                            </IconTabFilter>
+                            <IconTabFilter
+                                key="highPrice"
+                                text="High Price"
+                                icon="sap-icon://money-bills">
+                            </IconTabFilter>
+                        </items>
+                    </IconTabBar>
+                    <HBox justifyContent="Inherit">
+                        <Link
+                            text="Persons"
+                            press="onSeePersons"
+                            class="customLinkText"
+                        />
+                    </HBox>
+                    <SearchField
+                        width="50%"
+                        search="onSearch"
+                        liveChange="onLiveChange"
+                    />
+                    <Table
+                        id="odataTable"
+                        inset="false"
+                        items="{/Products}"
+                        itemPress="onShowData"
+                        growing="true"
+                        growingScrollToLoad="true" 
+                       growingThreshold="10"
+                    >
+                        <columns>
+                            <Column width="150px">
+                                <header>
+                                    <Label text="Product ID" />
+                                </header>
+                            </Column>
+                            <Column width="150px">
+                                <header>
+                                    <Label text="Name" />
+                                </header>
+                            </Column>
+                            <Column width="150px">
+                                <header>
+                                    <Label text="Price" />
+                                </header>
+                            </Column>
+                            <Column width="150px">
+                                <header>
+                                    <Label text="Rating" />
+                                </header>
+                            </Column>
+                            <Column width="150px">
+                                <header>
+                                    <Label text="Release Date" />
+                                </header>
+                            </Column>
+                            <Column width="150px">
+                                <header>
+                                    <Label text="Actions" />
+                                </header>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem
+                                type="Active"
+                                press="onShowData"
+                            >
+                                <Text text="{ID}" />
+                                <Text text="{Name}" />
+                                <Text text="{Price}" />
+                                <Text text="{Rating}" />
+                                <Text
+                                    text="{path: 'ReleaseDate', formatter: '.formatter.formatDate'}"
+                                />
+                                <HBox class="gap">
+                                    <Button
+                                        icon="sap-icon://edit"
+                                        text="Edit"
+                                        press="onShowEditingDialog"
+                                        visible="true"
+                                    />
+                                    <Button
+                                        class="deleteButton"
+                                        icon="sap-icon://delete"
+                                        text="Delete"
+                                        press="onDeletePress"
+                                        visible="true"
+                                    />
+                                </HBox>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </Page>
+        </f:beginColumnPages>
+
+        <!-- Detail Column -->
+        <f:midColumnPages>
+            <Page title="Product Details">
+                <headerContent>
+                    <Toolbar>
+                        <Title text="Product Details" />
+                        <ToolbarSpacer />
+                        <Button
+                            text="Open End Column"
+                            press="onOpenEndColumn"
+                        />
+                        <Button
+                            text="Close"
+                            press="onCloseDetailColumn"
+                        />
+                    </Toolbar>
+                </headerContent>
+                <VBox>
+                    <Text text="ID: {ID}" />
+                    <Text text="Name: {Name}" />
+                    <Text text=" Price: {Price}" />
+                    <Text text="Rating: {Rating}" />
+                    <Text text="ReleaseDate: {path: 'ReleaseDate', formatter: '.formatter.formatDate'}" />
+                </VBox>
+            </Page>
+        </f:midColumnPages>
+
+        <!-- End Column -->
+        <f:endColumnPages>
+            <Page title="Extra Details">
+                <headerContent>
+                    <Toolbar>
+                        <Title text="Extra Details" />
+                        <ToolbarSpacer />
+                        <Button
+                            text="Close"
+                            press="onCloseEndColumn"
+                        />
+                    </Toolbar>
+                </headerContent>
+                <content>
+                    <VBox class="sapUiSmallMargin">
+                        <Panel headerText="Product Information" expandable="true" expanded="false">
+                            <content>
+                                <List>
+                                    <StandardListItem title="Product ID" description="{ID}" />
+                                    <StandardListItem title="Name" description="{Name}" />
+                                    <StandardListItem title="Price" description="{Price}" />
+                                    <StandardListItem title="Rating" description="{Rating}" />
+                                    <StandardListItem title="Release Date" description="{path: 'ReleaseDate', formatter: '.formatter.formatDate'}" />
+                                </List>
+                            </content>
+                        </Panel>
+                        <Panel headerText="Progress" expandable="true" expanded="false">
+                            <content>
+                                <ProgressIndicator percentValue="95" displayValue="95%" state="Success" />
+                            </content>
+                        </Panel>
+                        <Panel headerText="Actions" expandable="true" expanded="false">
+                            <content>
+                                <Button text="Action 1" press="onAction1Press" />
+                                <Button text="Action 2" press="onAction2Press" />
+                            </content>
+                        </Panel>
+                    </VBox>
+                </content>
+            </Page>
+        </f:endColumnPages>
+    </f:FlexibleColumnLayout>
+
+    <!-- Update Product Dialog -->
+    <Dialog
+        id="updateDialog"
+        title="Update Product"
+    >
+        <VBox class="sapUiSmallMargin">
+            <Label text="Product Name" />
+            <Input id="productNameText" />
+            <Label text="Price" />
+            <Input
+                id="productPriceText"
+                type="Number"
+            />
+            <Label text="Rating" />
+            <Input
+                id="productRatingText"
+                type="Number"
+            />
+            <Label text="Release Date" />
+            <DatePicker
+                id="productReleaseDateText"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="yyyy-MM-dd"
+            />
+        </VBox>
+        <beginButton>
+            <Button
+                text="Save"
+                press="onEditPress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCloseEditingDialog"
+            />
+        </endButton>
+    </Dialog>
+
+    <!-- Create Product Dialog -->
+    <Dialog
+        id="createProductDialog"
+        title="Create Product"
+        type="Message"
+    >
+        <VBox class="sapUiSmallMargin">
+            <Label text="Product ID" />
+            <Input
+                name="ID"
+                id="newProductId"
+                type="Number"
+            />
+            <Label text="Name" />
+            <Input name="Name" id="newProductName" />
+            <Label text="Price" />
+            <Input
+            name="Price"
+                id="newProductPrice"
+                type="Number"
+            />
+            <Label text="Rating" />
+            <Input
+            name="Rate"
+                id="newProductRating"
+                type="Number"
+            />
+            <Label text="Release Date" />
+            <DatePicker
+            name="Date"
+                id="newProductReleaseDate"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="yyyy-MM-dd"
+            />
+        </VBox>
+        <beginButton>
+            <Button
+                text="Create"
+                press="onCreate"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCloseProductDialog"
+            />
+        </endButton>
+    </Dialog>
+
+    <!-- Create Product with Details Dialog -->
+    <Dialog
+        id="createProductWithDetailsDialog"
+        title="Create Product with Details"
+        type="Message"
+    >
+        <VBox class="sapUiSmallMargin">
+            <Label text="Product ID" />
+            <Input
+                id="newProductWithDetailsId"
+                type="Number"
+            />
+            <Label text="Name" />
+            <Input id="newProductWithDetailsName" />
+            <Label text="Price" />
+            <Input
+                id="newProductWithDetailsPrice"
+                type="Number"
+            />
+            <Label text="Rating" />
+            <Input
+                id="newProductWithDetailsRating"
+                type="Number"
+            />
+            <Label text="Release Date" />
+            <DatePicker
+                id="newProductWithDetailsReleaseDate"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="yyyy-MM-dd"
+            />
+            <Label text="Category 1 ID" />
+            <Input
+                id="newProductWithDetailsCategory1Id"
+                type="Number"
+            />
+            <Label text="Category 1 Name" />
+            <Input id="newProductWithDetailsCategory1Name" />
+            <Label text="Category 2 ID" />
+            <Input
+                id="newProductWithDetailsCategory2Id"
+                type="Number"
+            />
+            <Label text="Category 2 Name" />
+            <Input id="newProductWithDetailsCategory2Name" />
+            <Label text="Supplier ID" />
+            <Input
+                id="newProductWithDetailsSupplierId"
+                type="Number"
+            />
+            <Label text="Supplier Name" />
+            <Input id="newProductWithDetailsSupplierName" />
+            <Label text="Supplier Street" />
+            <Input id="newProductWithDetailsSupplierStreet" />
+            <Label text="Supplier City" />
+            <Input id="newProductWithDetailsSupplierCity" />
+            <Label text="Supplier State" />
+            <Input id="newProductWithDetailsSupplierState" />
+            <Label text="Supplier ZipCode" />
+            <Input id="newProductWithDetailsSupplierZipCode" />
+            <Label text="Supplier Country" />
+            <Input id="newProductWithDetailsSupplierCountry" />
+            <Label text="Supplier Latitude" />
+            <Input
+                id="newProductWithDetailsSupplierLatitude"
+                type="Number"
+            />
+            <Label text="Supplier Longitude" />
+            <Input
+                id="newProductWithDetailsSupplierLongitude"
+                type="Number"
+            />
+            <Label text="Product Detail ID" />
+            <Input
+                id="newProductWithDetailsProductDetailId"
+                type="Number"
+            />
+            <Label text="Product Detail Description" />
+            <Input id="newProductWithDetailsProductDetailDescription" />
+        </VBox>
+        <beginButton>
+            <Button
+                text="Create"
+                press="onCreateProductWithDetails"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCloseProductWithDetailsDialog"
+            />
+        </endButton>
+    </Dialog>
+</mvc:View>

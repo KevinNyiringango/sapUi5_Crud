@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "CommonJS",  // Use CommonJS to avoid conflicts with WebDriverIO
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "resolveJsonModule": true
+    },
+    "include": [
+      "wdio.conf.ts",
+      "test/**/*.ts"
+    ]
+  }
+  
